@@ -1,15 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package ca.sait.lab6.models;
 
 import java.io.Serializable;
 
 /**
  *
- * @author andyd
+ * @author Andy Diep
  */
 public class User implements Serializable {
+    private String email;
+    private boolean active;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private Role role;
     
 }
