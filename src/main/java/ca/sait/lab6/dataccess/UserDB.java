@@ -1,31 +1,43 @@
 package ca.sait.lab6.dataccess;
 
+import ca.sait.lab6.models.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import models.Note;
 
-public class NoteDB {
+public class UserDB {
 
-    public List<Note> getAll(String owner) throws Exception {
-        List<Note> notes = new ArrayList<>();
+    public List<User> getAll(String owner) throws Exception {
+        List<User> users = new ArrayList<>();
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         
-        String sql = "SELECT * FROM note WHERE owner=?";
+        String sql = "SELECT * FROM user INNER JOIN role ON role.role_id = user.role WHERE active != 0";
         
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, owner);
             rs = ps.executeQuery();
+              
+            /*rs = con.createStatement().executeQuery(sql);*/
+          
             while (rs.next()) {
-                int noteId = rs.getInt(1);
-                String title = rs.getString(2);
-                String contents = rs.getString(3);
+                String email = rs.getString(1);
+                boolean active = rs.getBoolean(2);
+                String firstName = rs.getString(3);
+                String lastName = rs.getString(4);
+                String password = rs.getString(5);
+                int roleId = rs.getInt(6);
+                String roleName = rs.getString(7);
+
+                Role role = new Role(roleId, roleName);
+
+                User user = new User(email, active, firstName, lastName, password, role);
+                users.add(user);
+            }
                 Note note = new Note(noteId, title, contents, owner);
                 notes.add(note);
             }
