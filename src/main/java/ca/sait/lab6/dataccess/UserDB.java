@@ -1,5 +1,6 @@
 package ca.sait.lab6.dataccess;
 
+import ca.sait.lab6.models.Role;
 import ca.sait.lab6.models.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,12 +35,9 @@ public class UserDB {
                 String roleName = rs.getString(7);
 
                 Role role = new Role(roleId, roleName);
-
                 User user = new User(email, active, firstName, lastName, password, role);
+                
                 users.add(user);
-            }
-                Note note = new Note(noteId, title, contents, owner);
-                notes.add(note);
             }
         } finally {
             DBUtil.closeResultSet(rs);
@@ -47,26 +45,31 @@ public class UserDB {
             cp.freeConnection(con);
         }
 
-        return notes;
+        return users;
     }
 
-    public Note get(int noteId) throws Exception {
-        Note note = null;
+    public User get(String email) throws Exception {
+        User user = null;
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT * FROM note WHERE note_id=?";
+        String sql = "SELECT * FROM user INNER JOIN role ON role.role_id = user.role WHERE email= ? LIMIT 1";
         
         try {
             ps = con.prepareStatement(sql);
-            ps.setInt(1, noteId);
+            ps.setString(1, email);
             rs = ps.executeQuery();
             if (rs.next()) {
-                String title = rs.getString(2);
-                String contents = rs.getString(3);
-                String owner = rs.getString(4);
-                note = new Note(noteId, title, contents, owner);
+                boolean active = rs.getBoolean(2);
+                String firstName = rs.getString(3);
+                String lastName = rs.getString(4);
+                String password = rs.getString(5);
+                int roleId = rs.getInt(6);
+                String roleName = rs.getString(7);
+
+                Role role = new Role(roleId, roleName);
+                user = new User(email, active, firstName, lastName, password, role);
             }
         } finally {
             DBUtil.closeResultSet(rs);
@@ -74,32 +77,38 @@ public class UserDB {
             cp.freeConnection(con);
         }
         
-        return note;
+        return user;
     }
 
-    public void insert(Note note) throws Exception {
+    public boolean insert(User user) throws Exception {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
-        String sql = "INSERT INTO note (title, contents, owner) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO `userdb`.`user` (`email`, `first_name`, `last_name`, `password`, `role`) VALUES (?, ?, ?, ?, ?)";
+        
+        boolean inserted = false;
         
         try {
-            ps = con.prepareStatement(sql);
-            ps.setString(1, note.getTitle());
-            ps.setString(2, note.getContents());
-            ps.setString(3, note.getOwner());
-            ps.executeUpdate();
+           ps = con.prepareStatement(sql);
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getFirstName());
+            ps.setString(3, user.getLastName());
+            ps.setString(4, user.getPassword());
+            ps.setInt(5, user.getRole().getId());
+            inserted = ps.executeUpdate() != 0;
         } finally {
             DBUtil.closePreparedStatement(ps);
             cp.freeConnection(con);
         }
+        
+        return inserted;
     }
 
-    public void update(Note note) throws Exception {
+    public void update(User user) throws Exception {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
-        String sql = "UPDATE note SET title=?, contents=? WHERE note_id=?";
+        String sql = "UPDATE user SET `first_name` = ?, `last_name` = ?, `password` = ?, `role` = ? WHERE `email` = ?";
         
         try {
             ps = con.prepareStatement(sql);
