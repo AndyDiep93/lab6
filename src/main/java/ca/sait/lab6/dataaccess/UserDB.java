@@ -83,7 +83,7 @@ public class UserDB {
             DBUtil.closeResultSet(rs);
             DBUtil.closePreparedStatement(ps);
             cp.freeConnection(con);
-        }
+        }   
         
         return user;
     }
@@ -110,9 +110,6 @@ public class UserDB {
             } else {
                 inserted = false;
             } */
-            
-            inserted = ps.executeUpdate() != 0;
-            
         } finally {
             DBUtil.closePreparedStatement(ps);
             cp.freeConnection(con);
