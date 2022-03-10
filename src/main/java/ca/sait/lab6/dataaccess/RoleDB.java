@@ -1,4 +1,4 @@
-package ca.sait.lab6.dataccess;
+package ca.sait.lab6.dataaccess;
 
 import ca.sait.lab6.models.Role;
 import java.sql.Connection;
@@ -20,21 +20,24 @@ public class RoleDB {
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-
+        
         String sql = "SELECT * FROM role";
-
+        
         try {
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-
-            /*rs = con.createStatement().executeQuery(sql);*/
+            
+            //rs = con.createStatement().executeQuery(sql);
+            
             while (rs.next()) {
                 int id = rs.getInt(1);
                 String name = rs.getString(2);
-
+                
                 Role role = new Role(id, name);
-
+                
                 roles.add(role);
+                
             }
         } finally {
             DBUtil.closeResultSet(rs);

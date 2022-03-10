@@ -1,6 +1,11 @@
-package ca.sait.lab6.dataccess;
+package ca.sait.lab6.dataaccess;
 
 import java.sql.*;
+
+/**
+ *
+ * @author Andy Diep
+ */
 
 public class DBUtil {
     public static void closePreparedStatement(Statement ps) {

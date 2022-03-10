@@ -3,23 +3,25 @@ package ca.sait.lab6.models;
 import java.io.Serializable;
 
 /**
- *
+ * Represents a User
  * @author Andy Diep
  */
 public class User implements Serializable {
+    
     private String email;
-
     private boolean active;
     private String firstName;
     private String lastName;
     private String password;
     private Role role;
     
-    public User(){
-        
+    
+    public User() {
+    
     }
     
-    public User(String email, boolean active, String firstName, String lastName, String password, Role role){
+    public User(String email, boolean active, String firstName, String lastName, String password, Role role)
+    {
         this.email = email;
         this.active = active;
         this.firstName = firstName;
@@ -27,7 +29,7 @@ public class User implements Serializable {
         this.password = password;
         this.role = role;
     }
-    
+
     public String getEmail() {
         return email;
     }

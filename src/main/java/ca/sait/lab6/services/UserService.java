@@ -1,11 +1,12 @@
 package ca.sait.lab6.services;
 
-import ca.sait.lab6.dataccess.UserDB;
+import ca.sait.lab6.dataaccess.UserDB;
 import ca.sait.lab6.models.Role;
 import ca.sait.lab6.models.User;
 import java.util.List;
 
 public class UserService {
+    
     private UserDB userDB = new UserDB();
     
     public User get(String email) throws Exception {
@@ -19,7 +20,7 @@ public class UserService {
     }
     
     public boolean insert(String email, boolean active, String firstName, String lastName, String password, Role role) throws Exception {
-        User user = new User (email, active, firstName, lastName, password, role);
+        User user = new User(email, active, firstName, lastName, password, role);
         return this.userDB.insert(user);
     }
     
@@ -29,7 +30,7 @@ public class UserService {
     }
     
     public boolean delete(String email) throws Exception {
-        User user = new User();
+        User user  = new User();
         user.setEmail(email);
         return this.userDB.delete(user);
     }

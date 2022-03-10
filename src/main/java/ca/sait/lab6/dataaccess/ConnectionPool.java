@@ -1,9 +1,14 @@
-package ca.sait.lab6.dataccess;
+package ca.sait.lab6.dataaccess;
 
 import javax.sql.DataSource;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.sql.*;
+
+/**
+ *
+ * @author Andy Diep
+ */
 
 public class ConnectionPool {
     private static ConnectionPool pool = null;
