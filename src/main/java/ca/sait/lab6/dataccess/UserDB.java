@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserDB {
 
-    public List<User> getAll(String owner) throws Exception {
+    public List<User> getAll() throws Exception {
         List<User> users = new ArrayList<>();
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
@@ -59,6 +59,7 @@ public class UserDB {
             ps = con.prepareStatement(sql);
             ps.setString(1, email);
             rs = ps.executeQuery();
+            
             if (rs.next()) {
                 boolean active = rs.getBoolean(2);
                 String firstName = rs.getString(3);
