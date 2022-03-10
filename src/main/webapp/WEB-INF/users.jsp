@@ -27,6 +27,7 @@
                     <th>E-mail</th>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    <th>Active</th>
                     <th>Actions</th>
                 </tr> 
             </thead>
@@ -36,6 +37,7 @@
                         <td>${user.email}</td>
                         <td>${user.firstName}</td>
                         <td>${user.lastName}</td>
+                        <td>${user.active ? "Y" : "N"}</td>
                         <td>
                             <a href="">Edit</a>
                             <a href="">Delete</a>
